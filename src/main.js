@@ -2,7 +2,7 @@
 import './style.css';
 
 // ---------------------------
-// STAP 1.2c: Pokémon tonen in de tabel
+// Fase1: Pokémon tonen in de tabel
 // ---------------------------
 
 // Helper: maak de eerste letter hoofdletter
