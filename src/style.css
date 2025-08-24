@@ -94,3 +94,34 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+#pokemon-table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-top: 1rem;
+  font-family: system-ui, sans-serif;
+}
+
+#pokemon-table th,
+#pokemon-table td {
+  padding: .5rem .75rem;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+  vertical-align: middle;
+}
+
+#pokemon-table thead th {
+  font-weight: 600;
+}
+
+#pokemon-table tr:hover {
+  background: #f7f7f7;
+}
+
+#pokemon-table img {
+  width: 48px;
+  height: 48px;
+  image-rendering: pixelated; 
+}
+
+#pokemon-table tbody tr:nth-child(odd) {
+  background: #fafafa;} 
