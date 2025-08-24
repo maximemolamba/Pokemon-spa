@@ -1,0 +1,4 @@
+.container { max-width: 960px; margin: 2rem auto; font-family: system-ui, sans-serif; }
+#pokemon-table img { width: 48px; height: 48px; image-rendering: pixelated; }
+#pokemon-table { width: 100%; border-collapse: collapse; }
+#pokemon-table th, #pokemon-table td { text-align: left; }
