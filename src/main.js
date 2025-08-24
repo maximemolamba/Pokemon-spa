@@ -54,8 +54,24 @@ function renderTable(pokemons) {
     tbody.appendChild(tr);
   });
 }
+// Globale cache
+let allPokemons = [];
 
-// 3) Startpunt
+// Zoeken in cache en tabel filteren
+function setupSearch() {
+  const input = document.getElementById('search-input');
+  if (!input) return;
+
+  input.addEventListener('input', (e) => {
+    const q = e.target.value.trim().toLowerCase();
+    const filtered = q
+      ? allPokemons.filter(pk => pk.name.toLowerCase().includes(q))
+      : allPokemons;
+    renderTable(filtered);
+  });
+}
+
+//Startpunt
 async function init() {
   // optioneel: zet tijdelijk "Loading..." in de tabel
   const tbody = document.getElementById("pokemon-tbody");
@@ -64,6 +80,7 @@ async function init() {
   try {
     const pokemons = await fetchPokemons(20);
     renderTable(pokemons);
+    setupSearch();
     console.log("Loaded", pokemons.length, "Pokémon"); // debug
   } catch (err) {
     console.error("Fout bij ophalen/renderen:", err);
