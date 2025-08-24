@@ -1,24 +1,18 @@
-import './style.css'
-import javascriptLogo from './javascript.svg'
-import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.js'
+async function fetchPokemonList(limit = 10) {
+  const res = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${limit}`);
+  if (!res.ok) throw new Error("Failed to fetch Pokémon list");
+  const data = await res.json();
+  return data.results;
+}
 
-document.querySelector('#app').innerHTML = `
-  <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank">
-      <img src="${javascriptLogo}" class="logo vanilla" alt="JavaScript logo" />
-    </a>
-    <h1>Hello Vite!</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite logo to learn more
-    </p>
-  </div>
-`
+async function init() {
+  console.log("Loading Pokémon list...");
+  try {
+    const list = await fetchPokemonList(10);
+    console.log("Fetched Pokémon list:", list);
+  } catch (err) {
+    console.error("Error while fetching Pokémon list:", err);
+  }
+}
 
-setupCounter(document.querySelector('#counter'))
+init();
