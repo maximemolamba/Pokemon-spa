@@ -58,8 +58,7 @@ async function init() {
     const pokemons = await fetchPokemons(10);
 
     // Log alle details naar de console zodat ik de structuur kan zien
-    console.log("Opgehaalde Pokémon details:", pokemons);
-
+       renderTable(pokemons);
     // Toon als test de eerste Pokémon naam in de console
     console.log("Eerste Pokémon:", cap(pokemons[0].name));
 
@@ -67,6 +66,34 @@ async function init() {
   catch (err) {
     console.error("Fout bij ophalen Pokémon details:", err);
   }
+}
+// Functie om de tabel te vullen met rijen
+function renderTable(pokemons) {
+  const tbody = document.getElementById("pokemon-tbody");
+  if (!tbody) return;
+
+  // Maak eerst de tabel leeg
+  tbody.innerHTML = "";
+
+  pokemons.forEach((pk) => {
+    const tr = document.createElement("tr");
+
+    const sprite =
+      pk?.sprites?.other?.["official-artwork"]?.front_default ||
+      pk?.sprites?.front_default ||
+      "";
+
+    tr.innerHTML = `
+      <td>${pk.id}</td>
+      <td>${sprite ? `<img src="${sprite}" alt="${cap(pk.name)}" width="48" height="48">` : ""}</td>
+      <td>${cap(pk.name)}</td>
+      <td>${pk.types.map((t) => t.type.name).join(", ")}</td>
+      <td>${pk.height}</td>
+      <td>${pk.weight}</td>
+    `;
+
+    tbody.appendChild(tr);
+  });
 }
 // Start de app
 init();
