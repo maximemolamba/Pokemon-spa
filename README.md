@@ -30,5 +30,27 @@ Dit project draait met **npm**.
 De server start je met:
 npm run dev
 
-   
+## Fase 2: Zoekfunctie
+
+### Wat heb ik gedaan
+- Zoekveld toegevoegd boven de tabel.
+- Lijst lokaal gecachet (`allPokemons`) en live gefilterd op naam bij elke toetsaanslag.
+- Tabel her-renderen met gefilterde resultaten.
+
+### Resultaat
+- Zoeken werkt direct (zonder refresh).
+- Performance is ok voor 20+ items.
+- Commit: `feat(search): live zoekfunctie op naam (filtert tabel)`
+
+
+## Fase 3: Sorteren
+
+### Wat heb ik gedaan
+- Dropdown toegevoegd om te sorteren op **ID**, **Naam**, **Gewicht** (↑/↓).
+- `currentList` ingevoerd zodat zoeken + sorteren samen werken.
+- Comparators met `localeCompare` en numerieke sort.
+
+### Resultaat
+- Lijst kan live gesorteerd worden zonder reload.
+- Werkt ook na een zoekopdracht.
 
