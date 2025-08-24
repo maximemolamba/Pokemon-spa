@@ -29,5 +29,44 @@ async function init() {
     console.error("Error while fetching Pokémon list:", err);
   }
 }
-// Voer de init-functie uit wanneer de app start
+// In deze stap ga ik naast de namen ook de *details* van elke Pokémon ophalen.
+// Dit doe ik via parallelle fetches: meerdere requests tegelijk uitvoeren
+// Kleine helperfunctie: eerste letter hoofdletter maken
+const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+
+// Functie om 10 Pokémon op te halen + hun details
+async function fetchPokemons(limit = 10) {
+  // Stap 1: lijst met namen en urls ophalen
+  const listRes = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${limit}`);
+  if (!listRes.ok) throw new Error("Kon de lijst niet ophalen");
+  const listData = await listRes.json();
+  // Stap 2: voor elke Pokémon url de details ophalen (parallel)
+  const detailPromises = listData.results.map(async (p) => {
+    const res = await fetch(p.url);
+    if (!res.ok) throw new Error(`Kon ${p.name} niet ophalen`);
+    return res.json(); // Geef detaildata terug
+  });
+
+  // Promise.all wacht tot alle requests klaar zijn en bundelt de resultaten
+  return Promise.all(detailPromises);
+}
+
+// Init-functie: startpunt van de app
+async function init() {
+  console.log("Bezig met laden van Pokémon details...");
+  try {
+    const pokemons = await fetchPokemons(10);
+
+    // Log alle details naar de console zodat ik de structuur kan zien
+    console.log("Opgehaalde Pokémon details:", pokemons);
+
+    // Toon als test de eerste Pokémon naam in de console
+    console.log("Eerste Pokémon:", cap(pokemons[0].name));
+
+  } 
+  catch (err) {
+    console.error("Fout bij ophalen Pokémon details:", err);
+  }
+}
+// Start de app
 init();
