@@ -67,22 +67,44 @@ function setupSearch() {
     const filtered = q
       ? allPokemons.filter(pk => pk.name.toLowerCase().includes(q))
       : allPokemons;
-    renderTable(filtered);
+      currentList = filtered;
+      renderTable(filtered);
+  });
+}
+let currentList = []; // wat nu getoond wordt (na search/sort)
+// Dit gaat zorgen voor de sorteren van fase 3 dus de..
+function setupSort() {
+  const sel = document.getElementById('sort-select');
+  if (!sel) return;
+
+  const cmp = {
+    'id-asc':   (a,b) => a.id - b.id,
+    'id-desc':  (a,b) => b.id - a.id,
+    'name-asc': (a,b) => a.name.localeCompare(b.name),
+    'name-desc':(a,b) => b.name.localeCompare(a.name),
+    'weight-asc': (a,b) => a.weight - b.weight,
+    'weight-desc':(a,b) => b.weight - a.weight,
+  };
+
+  sel.addEventListener('change', () => {
+    const sortFn = cmp[sel.value] || cmp['id-asc'];
+    const sorted = [...currentList].sort(sortFn); // kopie
+    renderTable(sorted);
   });
 }
 
 //Startpunt
 async function init() {
-  // zet tijdelijk "Loading..." in de tabel
   const tbody = document.getElementById("pokemon-tbody");
   if (tbody) tbody.innerHTML = `<tr><td colspan="6">Bezig met laden...</td></tr>`;
 
   try {
-    const pokemons = await fetchPokemons(20);
-    allPokemons = pokemons;
-    renderTable(allPokemons);
+    allPokemons = await fetchPokemons(20);
+    currentList = allPokemons;      // ⬅️ init view
+    renderTable(currentList);
     setupSearch();
-    console.log("Loaded", pokemons.length, "Pokémon"); // debug
+    setupSort();
+    console.log("Loaded", currentList.length, "Pokémon");
   } catch (err) {
     console.error("Fout bij ophalen/renderen:", err);
     if (tbody) tbody.innerHTML = `<tr><td colspan="6">Er ging iets mis.</td></tr>`;

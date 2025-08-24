@@ -12,8 +12,15 @@
     <div id="app" class="container">
     <h1>Pokémon Index</h1>
     <input id="search-input" type="search" placeholder="Zoek op naam…" />
-
-    <table>
+    <select id="sort-select">
+  <option value="id-asc">ID ↑</option>
+  <option value="id-desc">ID ↓</option>
+  <option value="name-asc">Naam A–Z</option>
+  <option value="name-desc">Naam Z–A</option>
+  <option value="weight-asc">Gewicht ↑</option>
+  <option value="weight-desc">Gewicht ↓</option>
+</select>
+  <table>
       <thead>
         <tr>
           <th>ID</th>
