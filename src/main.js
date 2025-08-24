@@ -73,13 +73,14 @@ function setupSearch() {
 
 //Startpunt
 async function init() {
-  // optioneel: zet tijdelijk "Loading..." in de tabel
+  // zet tijdelijk "Loading..." in de tabel
   const tbody = document.getElementById("pokemon-tbody");
   if (tbody) tbody.innerHTML = `<tr><td colspan="6">Bezig met laden...</td></tr>`;
 
   try {
     const pokemons = await fetchPokemons(20);
-    renderTable(pokemons);
+    allPokemons = pokemons;
+    renderTable(allPokemons);
     setupSearch();
     console.log("Loaded", pokemons.length, "Pokémon"); // debug
   } catch (err) {
