@@ -97,8 +97,8 @@ function setupTypeFilter() {
   if (!sel) return;
 
   // dropdown vullen
-  sel.length = 1;
-  const types = [...new Set(allPokemons.flatMap(pk => pk.types.map(t => t.type.name)))].sort();
+    sel.length = 1;
+    const types = [...new Set(allPokemons.flatMap(pk => pk.types.map(t => t.type.name)))].sort();
   types.forEach(t => {
     const opt = document.createElement('option');
     opt.value = t;
@@ -143,6 +143,47 @@ function setupOnlyFavs() {
   if (!cb) return;
   cb.addEventListener('change', applyFilters);
 }
+let viewMode = 'table'; // 'table' | 'cards'
+
+function renderCards(list) {
+  const wrap = document.getElementById('cards-container');
+  if (!wrap) return;
+  wrap.innerHTML = '';
+
+  list.forEach(pk => {
+    const sprite =
+      pk?.sprites?.other?.["official-artwork"]?.front_default ||
+      pk?.sprites?.front_default || "";
+
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <div class="title">#${pk.id} — ${cap(pk.name)}</div>
+      ${sprite ? `<img src="${sprite}" alt="${cap(pk.name)}">` : ''}
+      <div class="meta">${pk.types.map(t => t.type.name).join(', ')}</div>
+      <div class="meta">H: ${pk.height} • W: ${pk.weight}</div>
+      <button class="fav-btn" data-id="${pk.id}">${favIds.has(pk.id) ? '★' : '☆'}</button>
+    `;
+    wrap.appendChild(card);
+  });
+}
+
+function renderCurrentView() {
+  const table = document.getElementById('pokemon-table');
+  const cards = document.getElementById('cards-container');
+  if (!table || !cards) return;
+
+  if (viewMode === 'table') {
+    table.hidden = false;
+    cards.hidden = true;
+    renderTable(currentList);
+  } else {
+    table.hidden = true;
+    cards.hidden = false;
+    renderCards(currentList);
+  }
+}
+
 //Startpunt
 async function init() {
   const tbody = document.getElementById("pokemon-tbody");
