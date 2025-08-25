@@ -27,7 +27,8 @@ async function fetchPokemons(limit = 20) {
   return Promise.all(detailPromises);
 }
 
-// 2) Tabel renderen
+// Deze functie zorgt ervoor dat alle Pokémon netjes in de tabel verschijnen.
+// dit is gewoon de renderfunctie die mijn data uit de API omzet naar een tabel met minstens 6 kolommen
 function renderTable(pokemons) {
   const tbody = document.getElementById("pokemon-tbody");
   if (!tbody) {
@@ -62,10 +63,13 @@ function renderTable(pokemons) {
   });
 }
 // Globale cache
+// hierin komen alle pokemons
 let allPokemons = [];
-
+// favotieten uit locale storage laden of lege weergave als er niks is
 let favIds = new Set(JSON.parse(localStorage.getItem('favIds') || '[]'));
+// favorieten opslaan in local storage
 const saveFavs = () => localStorage.setItem('favIds', JSON.stringify([...favIds]));
+// favoriet toevoegen/verwijderen en direct opslaan
 const toggleFav = (id) => { favIds.has(id) ? favIds.delete(id) : favIds.add(id); saveFavs(); };
 
 // Zoeken in cache en tabel filteren
@@ -77,12 +81,13 @@ function setupSearch() {
   });
 }
 let currentList = []; // wat nu getoond wordt (na search/sort)
-// Dit gaat zorgen voor de sorteren van fase 3 dus de..
+// Dit gaat zorgen voor de sorteren van fase 3
 
 function setupSort() {
-  const sel = document.getElementById('sort-select');
-  if (!sel) return;
+  const sel = document.getElementById('sort-select'); // pak de dropdown (select)
+  if (!sel) return; // als die er niet is stop gewoon
 
+  // object met sorteerfuncties voor id, naam en gewicht
   const cmp = {
     'id-asc':   (a,b) => a.id - b.id,
     'id-desc':  (a,b) => b.id - a.id,
@@ -91,19 +96,20 @@ function setupSort() {
     'weight-asc': (a,b) => a.weight - b.weight,
     'weight-desc':(a,b) => b.weight - a.weight,
   };
-
+  // elke keer als de selectie verandert → sorteer lijst en render opnieuw
   sel.addEventListener('change', () => {
-    const sortFn = cmp[sel.value] || cmp['id-asc'];
-    currentList = [...currentList].sort(sortFn); 
-    renderCurrentView(); 
+    const sortFn = cmp[sel.value] || cmp['id-asc']; // pak juiste sorteerfunctie
+    currentList = [...currentList].sort(sortFn); // maak nieuwe gesorteerde lijst
+    renderCurrentView();  // toon de nieuwe lijst
   });
 }
+// pak de dropdown voor type-filter en als die er niet is stopt die hier ook
 function setupTypeFilter() {
   const sel = document.getElementById('type-filter');
   if (!sel) return;
 
-  // dropdown vullen
-    sel.length = 1;
+  // dropdown vullen met alle unieke types uit de Pokémon-lijst
+    sel.length = 1; // reset dropdown
     const types = [...new Set(allPokemons.flatMap(pk => pk.types.map(t => t.type.name)))].sort();
   types.forEach(t => {
     const opt = document.createElement('option');
@@ -116,6 +122,7 @@ function setupTypeFilter() {
   sel.addEventListener('change', applyFilters) 
   }; //
 
+//Zorgt dat de favorietenknoppen werken in zowel de tabel als kaartweergave
 function setupFavs() {
   const tbody = document.getElementById('pokemon-tbody');
   const cards = document.getElementById('cards-container');
@@ -124,12 +131,14 @@ function setupFavs() {
     const btn = e.target.closest('.fav-btn');
     if (!btn) return;
     toggleFav(Number(btn.dataset.id));
-    applyFilters(); // respecteert filters + view
+    applyFilters(); // toont lijst opnieuw met huidige view en filters
   };
-  
+   // eventlistener koppelen op zowel tabel- als kaartweergave
   if (tbody) tbody.addEventListener('click', handler);
   if (cards) cards.addEventListener('click', handler);
 }
+// Hier pas ik alle filters toe: zoeken op naam, filteren op type en/of enkel favorieten tonen. 
+// Het resultaat is een gefilterde lijst Pokémon die later in de view wordt weergegeven.
 function applyFilters() {
   const q = (document.getElementById('search-input')?.value || '').toLowerCase();
   const t = document.getElementById('type-filter')?.value || '';
@@ -149,23 +158,23 @@ function applyFilters() {
 }
 
 function setupOnlyFavs() {
-  const cb = document.getElementById('only-favs');
+  const cb = document.getElementById('only-favs'); // checkbox alleen favorieten
   if (!cb) return;
-  cb.addEventListener('change', applyFilters);
+  cb.addEventListener('change', applyFilters); // telekns opnieuw filteren bij aan/uit
 }
-let viewMode = 'table'; // 'table' | 'cards'
+let viewMode = 'table'; // bewaart huidige view tabel of kaarten
 
 function renderCards(list) {
   const wrap = document.getElementById('cards-container');
   if (!wrap) return;
   wrap.innerHTML = '';
-  
+  // toon lege boodschap als er geen resultaten zijn
   if (!list.length) {
   wrap.innerHTML = `<div class="empty">Geen resultaten</div>`;
   return;
 }
 
-
+// voor elke Pokémon een kaart maken met info + sprite + fav-knop
   list.forEach(pk => {
     const sprite =
       pk?.sprites?.other?.["official-artwork"]?.front_default ||
@@ -183,7 +192,8 @@ function renderCards(list) {
     wrap.appendChild(card);
   });
 }
-
+// Deze functie kiest welke view getoond wordt: tabel of kaarten. 
+// Op basis van viewMode wordt één van de twee zichtbaar gemaakt en gevuld met de gefilterde lijst.
 function renderCurrentView() {
   const table = document.getElementById('pokemon-table');
   const cards = document.getElementById('cards-container');
@@ -203,6 +213,8 @@ function renderCurrentView() {
   queueMicrotask(setupLazyImages); // of: setTimeout(setupLazyImages, 0)
 }
 
+//Deze functie zorgt dat de gebruiker kan schakelen tussen tabel en kaartweergave via een dropdown. 
+//De keuze wordt bewaard in localStorage zodat de voorkeur bij herladen onthouden wordt
 function setupViewToggle() {
   const sel = document.getElementById('view-select');
   if (!sel) return;
@@ -213,8 +225,9 @@ function setupViewToggle() {
   });
 }
 
-let itemsPerPage = Number(localStorage.getItem('perPage') || 20);
-
+let itemsPerPage = Number(localStorage.getItem('perPage') || 20); // aantal pokemons per pagina
+// Met deze functie kan de gebruiker kiezen hoeveel Pokémon tegelijk geladen worden (bv. 20, 50, 100). 
+// De keuze wordt onthouden in localStorage. Bij verandering wordt nieuwe data opgehaald en meteen de filters toegepast.
 function setupPerPage() {
   const sel = document.getElementById('per-page');
   if (!sel) return;
@@ -232,16 +245,17 @@ function setupPerPage() {
     applyFilters(); 
   });
 }
+// zet body class op dark of light theme
 function applyTheme(t) {
   document.body.classList.toggle('theme-dark', t === 'dark');
   document.body.classList.toggle('theme-light', t === 'light');
 }
 
 function setupTheme() {
-  const cb = document.getElementById('theme-toggle');
-  const saved = localStorage.getItem('theme') || 'light';
+  const cb = document.getElementById('theme-toggle'); // checkbox of switch voor theme
+  const saved = localStorage.getItem('theme') || 'light'; // opgeslagen voorkeur (default light)
   applyTheme(saved);
-  if (cb) {
+  if (cb) { // sync checkbox met opgeslagen theme
     cb.checked = (saved === 'dark');
     cb.addEventListener('change', () => {
       const t = cb.checked ? 'dark' : 'light';
@@ -250,6 +264,9 @@ function setupTheme() {
     });
   }
 }
+
+// Dit stuk bereidt het instellingenformulier voor: alle inputvelden, foutmeldingen en succesbericht worden opgehaald. In de volgende code 
+//  komt de echte validatie en opslag van de instellingen
 function setupSettingsForm() {
   const form = document.getElementById('settings-form');
   if (!form) return;
@@ -263,22 +280,25 @@ function setupSettingsForm() {
   const errAcc  = document.getElementById('err-accept');
 
   // init waarden
+  // // vooraf ingevulde waarden laden uit localStorage of defaults
   if (nameInp) nameInp.value = localStorage.getItem('trainerName') || '';
   if (perInp)  perInp.value  = String(itemsPerPage);
 
+  // 
+// helpers om foutmeldingen te tonen/verbergen
   const hide = el => el && (el.hidden = true);
   const show = el => el && (el.hidden = false);
-
+  // formulier afhandelen bij submit
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     let valid = true;
-
+     // validatie van velden: toon foutmeldingen indien ongeldig
     if (!nameInp.checkValidity()) { show(errName); valid = false; } else hide(errName);
     if (!perInp.checkValidity())  { show(errPer);  valid = false; } else hide(errPer);
     if (!accCb.checked)           { show(errAcc);  valid = false; } else hide(errAcc);
 
-    if (!valid) return;
+    if (!valid) return; // stop als iets niet klopt
 
     // opslaan
     localStorage.setItem('trainerName', nameInp.value.trim());
@@ -301,6 +321,8 @@ function setupSettingsForm() {
     applyFilters();
   });
 }
+//Deze functie laat een persoonlijke begroeting zien bovenaan de pagina. 
+//Als de gebruiker zijn naam in het instellingenformulier invult, wordt die opgeslagen en hier weergegeven als “Hi [naam]!”.
 function renderGreeting(){
   const el = document.getElementById('greet-name');
   if (!el) return;
@@ -338,6 +360,8 @@ function setupLazyImages() {
 function setStatus(msg){ const el=document.getElementById('status'); if(el) el.textContent = msg || ''; }
 
 //Startpunt
+//“De init() functie start de app: ze haalt de Pokémon-data op, zet de juiste view, 
+// activeert alle functies zoals zoeken en sorteren, en toont alles in de UI met statusmeldingen.”
 async function init() {
   const tbody = document.getElementById("pokemon-tbody");
   if (tbody) tbody.innerHTML = `<tr><td colspan="7">Bezig met laden...</td></tr>`;
