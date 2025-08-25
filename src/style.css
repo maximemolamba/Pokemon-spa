@@ -134,3 +134,17 @@ button:focus-visible {
 .fav-btn { border: 0; background: transparent; font-size: 1.1rem; cursor: pointer; }
 
 
+#cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px;
+  margin-top: 1rem;
+}
+.card {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 12px;
+  text-align: center;
+}
+.card img { width: 96px; height: 96px; image-rendering: pixelated; }
+.card .meta { font-size: .9rem; color: #666; }
