@@ -35,6 +35,10 @@ function renderTable(pokemons) {
     return;
   }
 
+  if (!pokemons.length) {
+  tbody.innerHTML = `<tr><td colspan="7">Geen resultaten</td></tr>`;
+  return;
+}
   tbody.innerHTML = ""; // leegmaken
 
   pokemons.forEach((pk) => {
@@ -155,6 +159,12 @@ function renderCards(list) {
   const wrap = document.getElementById('cards-container');
   if (!wrap) return;
   wrap.innerHTML = '';
+  
+  if (!list.length) {
+  wrap.innerHTML = `<div class="empty">Geen resultaten</div>`;
+  return;
+}
+
 
   list.forEach(pk => {
     const sprite =
