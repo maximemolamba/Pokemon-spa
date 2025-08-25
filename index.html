@@ -32,7 +32,14 @@
     </select>
 
 <div id="cards-container" hidden></div>
-      <table>
+<select id="per-page">
+  <option value="10">10</option>
+  <option value="20" selected>20</option>
+  <option value="50">50</option>
+</select>
+
+<label><input type="checkbox" id="theme-toggle"> Dark mode</label>
+      <table id="pokemon-table">
         <thead>
           <tr>
             <th>ID</th>
