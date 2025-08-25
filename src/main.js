@@ -97,6 +97,7 @@ function setupTypeFilter() {
   if (!sel) return;
 
   // dropdown vullen
+  sel.length = 1;
   const types = [...new Set(allPokemons.flatMap(pk => pk.types.map(t => t.type.name)))].sort();
   types.forEach(t => {
     const opt = document.createElement('option');
@@ -154,7 +155,7 @@ async function init() {
     setupSearch();
     setupSort();
     setupTypeFilter();
-    setupOnlyfavs();
+    setupOnlyFavs();
     setupFavs();            
 
     console.log("Loaded", currentList.length, "Pokémon");
