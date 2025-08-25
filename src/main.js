@@ -234,6 +234,65 @@ function setupTheme() {
     });
   }
 }
+function setupSettingsForm() {
+  const form = document.getElementById('settings-form');
+  if (!form) return;
+
+  const nameInp = document.getElementById('trainer-name');
+  const perInp  = document.getElementById('form-per-page');
+  const accCb   = document.getElementById('accept');
+  const okMsg   = document.getElementById('form-ok');
+  const errName = document.getElementById('err-name');
+  const errPer  = document.getElementById('err-perpage');
+  const errAcc  = document.getElementById('err-accept');
+
+  // init waarden
+  if (nameInp) nameInp.value = localStorage.getItem('trainerName') || '';
+  if (perInp)  perInp.value  = String(itemsPerPage);
+
+  const hide = el => el && (el.hidden = true);
+  const show = el => el && (el.hidden = false);
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    let valid = true;
+
+    if (!nameInp.checkValidity()) { show(errName); valid = false; } else hide(errName);
+    if (!perInp.checkValidity())  { show(errPer);  valid = false; } else hide(errPer);
+    if (!accCb.checked)           { show(errAcc);  valid = false; } else hide(errAcc);
+
+    if (!valid) return;
+
+    // opslaan
+    localStorage.setItem('trainerName', nameInp.value.trim());
+    renderGreeting();
+    itemsPerPage = Number(perInp.value);
+    localStorage.setItem('perPage', String(itemsPerPage));
+
+    // UI sync met bestaande select
+    const selPer = document.getElementById('per-page');
+    if (selPer) selPer.value = String(itemsPerPage);
+
+    // feedback
+    okMsg.hidden = false;
+    setTimeout(() => { okMsg.hidden = true; }, 1500);
+    // herladen data
+    const tbody = document.getElementById('pokemon-tbody');
+    if (tbody) tbody.innerHTML = `<tr><td colspan="7">Bezig met laden...</td></tr>`;
+    allPokemons = await fetchPokemons(itemsPerPage);
+    currentList = allPokemons;
+    applyFilters();
+  });
+}
+function renderGreeting(){
+  const el = document.getElementById('greet-name');
+  if (!el) return;
+  const name = localStorage.getItem('trainerName') || '';
+  el.textContent = name ? `– Hi ${name}!` : '';
+}
+// roepen na setupSettingsForm() en in init() na setupTheme():
+renderGreeting();
 
 //Startpunt
 async function init() {
@@ -259,7 +318,9 @@ if (savedView) {
     setupFavs();   
     setupViewToggle();  
     setupPerPage();  
-    setupTheme();     
+    setupTheme();  
+    renderGreeting();
+    setupSettingsForm();
 
     console.log("Loaded", currentList.length, "Pokémon");
   } catch (err) {
