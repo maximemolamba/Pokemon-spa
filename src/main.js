@@ -111,7 +111,7 @@ types.forEach(t => {
 
   currentList = list;
   renderTable(currentList);
-  
+
   const sortSel = document.getElementById('sort-select');
   if (sortSel) sortSel.dispatchEvent(new Event('change'));
 });
@@ -130,6 +130,8 @@ async function init() {
     renderTable(currentList);
     setupSearch();
     setupSort();
+    setupTypeFilter();
+
     console.log("Loaded", currentList.length, "Pokémon");
   } catch (err) {
     console.error("Fout bij ophalen/renderen:", err);
