@@ -67,17 +67,12 @@ function setupSearch() {
   const input = document.getElementById('search-input');
   if (!input) return;
 
-  input.addEventListener('input', (e) => {
-    const q = e.target.value.trim().toLowerCase();
-    const filtered = q
-      ? allPokemons.filter(pk => pk.name.toLowerCase().includes(q))
-      : allPokemons;
-      currentList = filtered;
-      renderTable(currentList);
+   input.addEventListener('input', () => { applyFilters();
   });
 }
 let currentList = []; // wat nu getoond wordt (na search/sort)
 // Dit gaat zorgen voor de sorteren van fase 3 dus de..
+
 function setupSort() {
   const sel = document.getElementById('sort-select');
   if (!sel) return;
@@ -111,21 +106,9 @@ function setupTypeFilter() {
   });
 
   // één change-listener
-  sel.addEventListener('change', () => {
-    const q = (document.getElementById('search-input')?.value || '').toLowerCase();
-    const t = sel.value;
+  sel.addEventListener('change', applyFilters) 
+  }; //
 
-    let list = allPokemons;
-    if (q) list = list.filter(pk => pk.name.toLowerCase().includes(q));
-    if (t) list = list.filter(pk => pk.types.some(x => x.type.name === t));
-
-    currentList = list;
-    renderTable(currentList);
-
-    const sortSel = document.getElementById('sort-select');
-    if (sortSel) sortSel.dispatchEvent(new Event('change'));
-  });
-}
 function setupFavs() {
   const tbody = document.getElementById('pokemon-tbody');
   if (!tbody) return;
@@ -133,7 +116,7 @@ function setupFavs() {
     const btn = e.target.closest('.fav-btn');
     if (!btn) return;
     toggleFav(Number(btn.dataset.id));
-    renderTable(currentList);
+    applyFilters();
   });
 }
 function applyFilters() {
@@ -151,7 +134,7 @@ function applyFilters() {
 
   const sortSel = document.getElementById('sort-select');
   if (sortSel) sortSel.dispatchEvent(new Event('change'));
-  
+
 }
 
 //Startpunt
@@ -171,7 +154,7 @@ async function init() {
     console.log("Loaded", currentList.length, "Pokémon");
   } catch (err) {
     console.error("Fout bij ophalen/renderen:", err);
-    if (tbody) tbody.innerHTML = `<tr><td colspan="6">Er ging iets mis.</td></tr>`;
+    if (tbody) tbody.innerHTML = `<tr><td colspan="7">Er ging iets mis.</td></tr>`;
   }
 }
 
