@@ -101,6 +101,19 @@ types.forEach(t => {
   opt.value = t;
   opt.textContent = t;
   sel.appendChild(opt);
+  sel.addEventListener('change', () => {
+  const q = (document.getElementById('search-input')?.value || '').toLowerCase();
+  const t = sel.value;
+
+  let list = allPokemons;
+  if (q) list = list.filter(pk => pk.name.toLowerCase().includes(q));
+  if (t) list = list.filter(pk => pk.types.some(x => x.type.name === t));
+
+  currentList = list;
+  renderTable(currentList);
+  const sortSel = document.getElementById('sort-select');
+  if (sortSel) sortSel.dispatchEvent(new Event('change'));
+});
 });
 
 }
