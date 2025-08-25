@@ -18,6 +18,7 @@ Dit project draait met **npm**.
 De server start je met:
 npm run dev
 npx vite preview
+http://localhost:4173/
 
 ## 2) Data & API
 
