@@ -57,6 +57,10 @@ function renderTable(pokemons) {
 // Globale cache
 let allPokemons = [];
 
+let favIds = new Set(JSON.parse(localStorage.getItem('favIds') || '[]'));
+const saveFavs = () => localStorage.setItem('favIds', JSON.stringify([...favIds]));
+const toggleFav = (id) => { favIds.has(id) ? favIds.delete(id) : favIds.add(id); saveFavs(); };
+
 // Zoeken in cache en tabel filteren
 function setupSearch() {
   const input = document.getElementById('search-input');
