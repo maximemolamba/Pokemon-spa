@@ -100,6 +100,18 @@ function setupSort() {
 function setupTypeFilter() {
   const sel = document.getElementById('type-filter');
   if (!sel) return;
+  
+function setupFavs() {
+  const tbody = document.getElementById('pokemon-tbody');
+  if (!tbody) return;
+
+  tbody.addEventListener('click', (e) => {
+    const btn = e.target.closest('.fav-btn');
+    if (!btn) return;
+    toggleFav(Number(btn.dataset.id));
+    renderTable(currentList); // sterren updaten
+  });
+}
 
   // dropdown vullen
   const types = [...new Set(allPokemons.flatMap(pk => pk.types.map(t => t.type.name)))].sort();
@@ -139,6 +151,7 @@ async function init() {
     setupSearch();
     setupSort();
     setupTypeFilter();
+    setupFavs();            
 
     console.log("Loaded", currentList.length, "Pokémon");
   } catch (err) {
