@@ -88,8 +88,8 @@ function setupSort() {
 
   sel.addEventListener('change', () => {
     const sortFn = cmp[sel.value] || cmp['id-asc'];
-    const sorted = [...currentList].sort(sortFn); // kopie
-    renderTable(sorted);
+    currentList = [...currentList].sort(sortFn); 
+    renderCurrentView(); 
   });
 }
 function setupTypeFilter() {
@@ -203,7 +203,9 @@ async function init() {
   try {
     allPokemons = await fetchPokemons(20);
     currentList = allPokemons;      // ⬅️ init view
-    renderTable(currentList);
+    const selView = document.getElementById('view-select');
+    if (selView) viewMode = selView.value; // 'table' of 'cards'
+    renderCurrentView();
     setupSearch();
     setupSort();
     setupTypeFilter();
