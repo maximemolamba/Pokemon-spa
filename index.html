@@ -39,6 +39,32 @@
 </select>
 
 <label><input type="checkbox" id="theme-toggle"> Dark mode</label>
+<form id="settings-form" novalidate>
+  <fieldset>
+    <legend>Instellingen</legend>
+
+    <label>Trainer naam
+      <input id="trainer-name" type="text"
+             required minlength="3" maxlength="20"
+             pattern="[A-Za-zÀ-ÿ' -]{3,20}" placeholder="bv. Max">
+    </label>
+    <small class="error" id="err-name" hidden>Naam moet 3–20 letters zijn.</small>
+
+    <label>Items per page (5–100)
+      <input id="form-per-page" type="number" required min="5" max="100" step="5">
+    </label>
+    <small class="error" id="err-perpage" hidden>Kies tussen 5 en 100.</small>
+
+    <label>
+      <input id="accept" type="checkbox" required> Ik bevestig mijn instellingen
+    </label>
+    <small class="error" id="err-accept" hidden>Vink dit aan om te bevestigen.</small>
+
+    <button type="submit">Opslaan</button>
+    <span id="form-ok" role="status" aria-live="polite" hidden>Opgeslagen ✓</span>
+  </fieldset>
+</form>
+
       <table id="pokemon-table">
         <thead>
           <tr>
