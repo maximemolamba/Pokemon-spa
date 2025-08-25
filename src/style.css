@@ -127,3 +127,5 @@ button:focus-visible {
   background: #fafafa;} 
 
   #search-input { margin: 1rem 0; padding: .5rem .75rem; max-width: 320px; }
+
+#type-filter { margin: 0 0 1rem .5rem; padding: .5rem .75rem; }
