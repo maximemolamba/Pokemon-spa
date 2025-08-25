@@ -84,4 +84,14 @@ npm run dev
 - je kan vlot wisselen tussen tabel en kaarten
 - slechts 1 view zichtbaar, alles blijft gefilterd/gesorteerd
 
+## fase 7 – voorkeuren (items-per-page + dark mode + view-mode)
+
+**wat heb ik gedaan**
+- **items-per-page** selector (10/20/50) → bewaart keuze in `localStorage` (`perPage`) en doet refetch.
+- **dark mode** toggle → zet `body.theme-dark`/`body.theme-light`, bewaart in `localStorage` (`theme`).
+- **view-mode** (table/cards) wordt ook onthouden in `localStorage` (`viewMode`).
+
+**resultaat**
+- app onthoudt mijn voorkeuren na refresh.
+- wisselen van aantal items + thema gebeurt direct, zonder pagina-reload.
 
