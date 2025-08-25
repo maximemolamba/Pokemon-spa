@@ -24,6 +24,7 @@ npx vite preview
 ## Data & API
 - Dataset: **PokéAPI** — https://pokeapi.co/
 - Endpoint: `https://pokeapi.co/api/v2/pokemon?limit={n}` (detail-URL per item uit de lijst)
+- http://localhost:4173/
 
 ## Folderstructuur
 .
@@ -59,8 +60,7 @@ npx vite preview
 **Styling** — `#cards-container` grid, tabelstyles, `.table-wrap` (overflow-x), themaklassen, `.empty`, `.sr-only`
 **Tooling** — Vite, gescheiden `html/css/js` in `src/`
 
-## Demo
-- Video: **
+
 ## Bronnen
 - PokéAPI (docs & endpoints)
 - Lesmateriaal
@@ -84,6 +84,60 @@ Effect: één renderpad voor beide views → minder bugs.
 3) **Lazy-load sprites (Observer)**
 > “Zet `src` op een blank gif en de echte URL in `data-src`; laad via `IntersectionObserver` in `setupLazyImages()`.”
 Effect: snellere initial load; images laden pas in zicht.
+>
+extra: 
+### **Init + eerste fetch**  
+> “Start in `init()`: haal data met `fetchPokemons(20)`, zet `currentList`, en render `renderTable(currentList)`.”  
+**Effect:** app start direct met zichtbare data.
+
+---
+
+### **Capitalize helper**  
+> “Maak `cap(s)` die eerste letter uppercase zet: `s.charAt(0).toUpperCase()+s.slice(1)`.”  
+**Effect:** namen zien er netjes uit.
+
+---
+
+### **Search input (live)**  
+> “Luister op `input` van `#search-input` en roep `applyFilters()`.”  
+**Effect:** live zoeken terwijl je typt.
+
+---
+
+### **currentList concept**  
+> “Gebruik `currentList` als werkset na filter/sort i.p.v. `allPokemons`.”  
+**Effect:** sorteren werkt op het gefilterde resultaat.
+
+---
+
+### **Sort comparator object**  
+> “Definieer `cmp` map met compare-functies voor id/naam/gewicht.”  
+**Effect:** nette, uitbreidbare sorteerlogica.
+
+---
+
+### **Sort event**  
+> “Op `#sort-select change`: kies `cmp[waarde]`, sorteer `currentList`, `renderCurrentView()`.”  
+**Effect:** directe resort zonder herladen.
+
+---
+
+### **Type-filter vullen**  
+> “Haal unieke types uit `allPokemons`, vul dropdown, luister `change → applyFilters()`.”  
+**Effect:** filteren per type werkt meteen.
+
+---
+
+### **Favorites storage**  
+> “Bewaar ids in `Set` + `localStorage`; `toggleFav()` voegt/verwijdert en `saveFavs()` slaat op.”  
+**Effect:** favorieten blijven bewaard tussen sessies.
+
+---
+
+### **Fav button via event delegation**  
+> “Één click-handler op tabel én kaarten; vind `.fav-btn` met `closest`, gebruik `dataset.id`.”  
+**Effect:** ★/☆ werkt ove
+
 
 ## codevoorbeelden (gebruikt)
 // applyFilters (samengevat)
