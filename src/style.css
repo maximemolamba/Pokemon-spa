@@ -160,3 +160,6 @@ body.theme-light { background:#fff; color:#213547; }
 input:invalid { outline:2px solid #d33; }
 fieldset { border:1px solid #ddd; border-radius:10px; padding:12px; margin-top:1rem; }
 legend { padding:0 .5rem; font-weight:600; }
+
+.lazy-img { opacity:.85; transition: opacity .2s; }
+.lazy-img:not([data-src]) { opacity:1; }

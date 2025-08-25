@@ -8,6 +8,8 @@ import './style.css';
 // Helper: maak de eerste letter hoofdletter
 const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
 
+const BLANK_IMG = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==';
+
 // 1) Data ophalen (lijst + details)
 async function fetchPokemons(limit = 20) {
   // Lijst ophalen
@@ -44,7 +46,7 @@ function renderTable(pokemons) {
 
     tr.innerHTML = `
       <td>${pk.id}</td>
-      <td>${sprite ? `<img src="${sprite}" alt="${cap(pk.name)}" width="48" height="48">` : ""}</td>
+      <td>${sprite ? `<img loading="lazy" src="${BLANK_IMG}" data-src="${sprite}" alt="${cap(pk.name)}" width="48" height="48" class="lazy-img">` : ""}</td>
       <td>${cap(pk.name)}</td>
       <td>${pk.types.map((t) => t.type.name).join(", ")}</td>
       <td>${pk.height}</td>
@@ -163,7 +165,7 @@ function renderCards(list) {
     card.className = 'card';
     card.innerHTML = `
       <div class="title">#${pk.id} — ${cap(pk.name)}</div>
-      ${sprite ? `<img src="${sprite}" alt="${cap(pk.name)}">` : ''}
+      ${sprite ? `<img loading="lazy" src="${BLANK_IMG}" data-src="${sprite}" alt="${cap(pk.name)}" class="lazy-img">` : ''}
       <div class="meta">${pk.types.map(t => t.type.name).join(', ')}</div>
       <div class="meta">H: ${pk.height} • W: ${pk.weight}</div>
       <button class="fav-btn" data-id="${pk.id}">${favIds.has(pk.id) ? '★' : '☆'}</button>
@@ -186,7 +188,11 @@ function renderCurrentView() {
     cards.hidden = false;
     renderCards(currentList);
   }
+
+  // altijd NA het renderen (voor beide views)
+  queueMicrotask(setupLazyImages); // of: setTimeout(setupLazyImages, 0)
 }
+
 function setupViewToggle() {
   const sel = document.getElementById('view-select');
   if (!sel) return;
@@ -293,6 +299,32 @@ function renderGreeting(){
 }
 // roepen na setupSettingsForm() en in init() na setupTheme():
 renderGreeting();
+
+let imgObserver;
+function setupLazyImages() {
+  const imgs = document.querySelectorAll('img[data-src]');
+  if (!imgs.length) return;
+
+  // fallback zonder Observer
+  if (!('IntersectionObserver' in window)) {
+    imgs.forEach(img => { img.src = img.dataset.src; img.removeAttribute('data-src'); });
+    return;
+  }
+
+  if (imgObserver) imgObserver.disconnect();
+  imgObserver = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const img = entry.target;
+      img.src = img.dataset.src;
+      img.onload = () => img.removeAttribute('data-src');
+      obs.unobserve(img);
+    });
+  }, { root: null, rootMargin: '300px 0px', threshold: 0.01 });
+
+  imgs.forEach(img => imgObserver.observe(img));
+}
+
 
 //Startpunt
 async function init() {
