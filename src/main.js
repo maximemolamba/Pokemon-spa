@@ -131,7 +131,7 @@ function applyFilters() {
   if (onlyFavs) list = list.filter(pk => favIds.has(pk.id));
 
   currentList = list;
-  renderTable(currentList);
+  renderCurrentView();
 
   const sortSel = document.getElementById('sort-select');
   if (sortSel) sortSel.dispatchEvent(new Event('change'));
@@ -183,7 +183,14 @@ function renderCurrentView() {
     renderCards(currentList);
   }
 }
-
+function setupViewToggle() {
+  const sel = document.getElementById('view-select');
+  if (!sel) return;
+  sel.addEventListener('change', () => {
+    viewMode = sel.value; // 'table' | 'cards'
+    renderCurrentView();
+  });
+}
 //Startpunt
 async function init() {
   const tbody = document.getElementById("pokemon-tbody");
@@ -197,7 +204,8 @@ async function init() {
     setupSort();
     setupTypeFilter();
     setupOnlyFavs();
-    setupFavs();            
+    setupFavs();   
+    setupViewToggle();         
 
     console.log("Loaded", currentList.length, "Pokémon");
   } catch (err) {
