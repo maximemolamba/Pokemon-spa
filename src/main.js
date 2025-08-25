@@ -95,28 +95,31 @@ function setupSort() {
 function setupTypeFilter() {
   const sel = document.getElementById('type-filter');
   if (!sel) return;
+
+  // dropdown vullen
   const types = [...new Set(allPokemons.flatMap(pk => pk.types.map(t => t.type.name)))].sort();
-types.forEach(t => {
-  const opt = document.createElement('option');
-  opt.value = t;
-  opt.textContent = t;
-  sel.appendChild(opt);
+  types.forEach(t => {
+    const opt = document.createElement('option');
+    opt.value = t;
+    opt.textContent = t;
+    sel.appendChild(opt);
+  });
+
+  // één change-listener
   sel.addEventListener('change', () => {
-  const q = (document.getElementById('search-input')?.value || '').toLowerCase();
-  const t = sel.value;
+    const q = (document.getElementById('search-input')?.value || '').toLowerCase();
+    const t = sel.value;
 
-  let list = allPokemons;
-  if (q) list = list.filter(pk => pk.name.toLowerCase().includes(q));
-  if (t) list = list.filter(pk => pk.types.some(x => x.type.name === t));
+    let list = allPokemons;
+    if (q) list = list.filter(pk => pk.name.toLowerCase().includes(q));
+    if (t) list = list.filter(pk => pk.types.some(x => x.type.name === t));
 
-  currentList = list;
-  renderTable(currentList);
+    currentList = list;
+    renderTable(currentList);
 
-  const sortSel = document.getElementById('sort-select');
-  if (sortSel) sortSel.dispatchEvent(new Event('change'));
-});
-});
-
+    const sortSel = document.getElementById('sort-select');
+    if (sortSel) sortSel.dispatchEvent(new Event('change'));
+  });
 }
 
 //Startpunt
