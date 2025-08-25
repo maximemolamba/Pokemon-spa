@@ -49,6 +49,7 @@ function renderTable(pokemons) {
       <td>${pk.types.map((t) => t.type.name).join(", ")}</td>
       <td>${pk.height}</td>
       <td>${pk.weight}</td>
+      <td><button class="fav-btn" data-id="${pk.id}">${favIds.has(pk.id) ? '★' : '☆'}</button></td>
     `;
 
     tbody.appendChild(tr);
