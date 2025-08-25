@@ -92,6 +92,10 @@ function setupSort() {
     renderTable(sorted);
   });
 }
+function setupTypeFilter() {
+  const sel = document.getElementById('type-filter');
+  if (!sel) return;
+}
 
 //Startpunt
 async function init() {
