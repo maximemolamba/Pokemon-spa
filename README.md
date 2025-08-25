@@ -95,3 +95,16 @@ npm run dev
 - app onthoudt mijn voorkeuren na refresh.
 - wisselen van aantal items + thema gebeurt direct, zonder pagina-reload.
 
+## 7.2 – live begroeting (trainerName)
+**wat heb ik gedaan**
+- In de titel `<h1>` een `<span id="greet-name">` gezet.
+- `renderGreeting()` gemaakt: leest `localStorage.trainerName` en toont `– Hi {naam}!`.
+- Aangeroepen **na thema** in `init()` én **na submit** van het instellingen-form, dus **geen refresh nodig**.
+- Naam zelf wordt opgeslagen via het form.
+
+**resultaat**
+- Na opslaan zie je meteen `– Hi Max!` in de titel en het blijft na reload.
+
+
+
+
