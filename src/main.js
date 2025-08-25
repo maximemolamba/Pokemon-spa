@@ -192,6 +192,7 @@ function setupViewToggle() {
   if (!sel) return;
   sel.addEventListener('change', () => {
     viewMode = sel.value; // 'table' | 'cards'
+    localStorage.setItem('viewMode', viewMode);
     renderCurrentView();
   });
 }
@@ -244,6 +245,12 @@ async function init() {
     currentList = allPokemons;      // ⬅️ init view
     const selView = document.getElementById('view-select');
     if (selView) viewMode = selView.value; // 'table' of 'cards'
+    const savedView = localStorage.getItem('viewMode');
+if (savedView) {
+  viewMode = savedView;
+  const vs = document.getElementById('view-select');
+  if (vs) vs.value = viewMode;
+}
     renderCurrentView();
     setupSearch();
     setupSort();
