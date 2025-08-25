@@ -73,5 +73,15 @@ npm run dev
 - ★ blijft na refresh
 - met “alleen favorieten” zie je enkel je faves
 
+## fase 6 – kaarten view + toggle
+**wat heb ik gedaan**
+- view-toggle toegevoegd (`table` ↔ `cards`)
+- `renderCards(list)` gemaakt met simpele grid
+- centrale `renderCurrentView()` die ofwel tabel ofwel cards toont
+- sort/search/type/favs werken ook in cards
+
+**resultaat**
+- je kan vlot wisselen tussen tabel en kaarten
+- slechts 1 view zichtbaar, alles blijft gefilterd/gesorteerd
 
 
