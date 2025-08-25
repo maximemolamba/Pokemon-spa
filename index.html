@@ -4,45 +4,43 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite App</title>
-
+    <title>Pokémon Index</title>
   </head>
   <body>
-    <script type="module" src="/src/main.js"></script>
     <div id="app" class="container">
-    <h1>Pokémon Index</h1>
-    <input id="search-input" type="search" placeholder="Zoek op naam…" />
-    <select id="sort-select">
-  <option value="id-asc">ID ↑</option>
-  <option value="id-desc">ID ↓</option>
-  <option value="name-asc">Naam A–Z</option>
-  <option value="name-desc">Naam Z–A</option>
-  <option value="weight-asc">Gewicht ↑</option>
-  <option value="weight-desc">Gewicht ↓</option>
-</select>
-<select id="type-filter">
-  <option value="">Alle types</option>
-</select>
-<input id="search-input" type="search" placeholder="Zoek op naam…">
-<select id="sort-select">…</select>
-<select id="type-filter">
-  <option value="">Alle types</option>
-</select>
-<label><input type="checkbox" id="only-favs"> Alleen favorieten</label>
-    <table>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Sprite</th>
-          <th>Name</th>
-          <th>Types</th>
-          <th>Height</th>
-          <th>Weight</th>
-          <th>Fav</th>
-        </tr>
-      </thead>
-      <tbody id="pokemon-tbody"></tbody>
-    </table>
-  </div>
+      <h1>Pokémon Index</h1>
+
+      <input id="search-input" type="search" placeholder="Zoek op naam…" />
+      <select id="sort-select">
+        <option value="id-asc">ID ↑</option>
+        <option value="id-desc">ID ↓</option>
+        <option value="name-asc">Naam A–Z</option>
+        <option value="name-desc">Naam Z–A</option>
+        <option value="weight-asc">Gewicht ↑</option>
+        <option value="weight-desc">Gewicht ↓</option>
+      </select>
+
+      <select id="type-filter">
+        <option value="">Alle types</option>
+      </select>
+
+      <label><input type="checkbox" id="only-favs"> Alleen favorieten</label>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Sprite</th>
+            <th>Name</th>
+            <th>Types</th>
+            <th>Height</th>
+            <th>Weight</th>
+            <th>Fav</th>
+          </tr>
+        </thead>
+        <tbody id="pokemon-tbody"></tbody>
+      </table>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
   </body>
 </html>
