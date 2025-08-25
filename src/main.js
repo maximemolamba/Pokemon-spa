@@ -195,13 +195,34 @@ function setupViewToggle() {
     renderCurrentView();
   });
 }
+
+let itemsPerPage = Number(localStorage.getItem('perPage') || 20);
+
+function setupPerPage() {
+  const sel = document.getElementById('per-page');
+  if (!sel) return;
+  sel.value = String(itemsPerPage);
+
+  sel.addEventListener('change', async () => {
+    itemsPerPage = Number(sel.value);
+    localStorage.setItem('perPage', String(itemsPerPage));
+
+    const tbody = document.getElementById('pokemon-tbody');
+    if (tbody) tbody.innerHTML = `<tr><td colspan="7">Bezig met laden...</td></tr>`;
+
+    allPokemons = await fetchPokemons(itemsPerPage);
+    currentList = allPokemons;
+    applyFilters(); 
+  });
+}
+
 //Startpunt
 async function init() {
   const tbody = document.getElementById("pokemon-tbody");
   if (tbody) tbody.innerHTML = `<tr><td colspan="7">Bezig met laden...</td></tr>`;
 
   try {
-    allPokemons = await fetchPokemons(20);
+    allPokemons = await fetchPokemons(itemsPerPage);
     currentList = allPokemons;      // ⬅️ init view
     const selView = document.getElementById('view-select');
     if (selView) viewMode = selView.value; // 'table' of 'cards'
@@ -211,7 +232,8 @@ async function init() {
     setupTypeFilter();
     setupOnlyFavs();
     setupFavs();   
-    setupViewToggle();         
+    setupViewToggle();  
+    setupPerPage();       
 
     console.log("Loaded", currentList.length, "Pokémon");
   } catch (err) {
