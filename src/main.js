@@ -111,6 +111,7 @@ types.forEach(t => {
 
   currentList = list;
   renderTable(currentList);
+  
   const sortSel = document.getElementById('sort-select');
   if (sortSel) sortSel.dispatchEvent(new Event('change'));
 });
