@@ -105,6 +105,28 @@ npm run dev
 **resultaat**
 - Na opslaan zie je meteen `– Hi Max!` in de titel en het blijft na reload.
 
+## fase 8 – formulier + validatie (instellingen)
+**wat heb ik gedaan**
+- Instellingen-form toegevoegd met:
+  - **Trainer naam** (required, pattern, 3–20 tekens) opslaan in `localStorage.trainerName`
+  - **Items per page** (number, min 5, max 100, step 5) synced met per-page select
+  - **Bevestigen** checkbox (required)
+- Bij submit: validatie → opslaan → feedback “Opgeslagen” → **refetch** met nieuwe `itemsPerPage`
+- Live begroeting: `renderGreeting()` toont `– Hi {naam}!` meteen (zonder refresh)
 
+**resultaat**
+- Instellingen zijn geverifieerd en blijven na refresh
+- Data wordt opnieuw opgehaald met nieuw aantal items
 
+## fase 9 – polish & a11y
+**wat heb ik gedaan**
+- **“Geen resultaten”** boodschap in tabel + cards wanneer filters leeg lopen
+- **aria-live status** (screenreader) voor “Bezig met laden… / fout”
+- **Mobiel**: tabel in een `.table-wrap` met horizontale scroll
+- **Lazy-load sprites** met IntersectionObserver (performance)
+
+**resultaat**
+- Beter UX: duidelijke feedback bij laden/geen data
+- Toegankelijker voor screenreaders
+- Snellere pagina door lazy-load
 
