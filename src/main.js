@@ -136,11 +136,28 @@ function setupFavs() {
     renderTable(currentList);
   });
 }
+function applyFilters() {
+  const q = (document.getElementById('search-input')?.value || '').toLowerCase();
+  const t = document.getElementById('type-filter')?.value || '';
+  const onlyFavs = document.getElementById('only-favs')?.checked || false;
+
+  let list = allPokemons;
+  if (q) list = list.filter(pk => pk.name.toLowerCase().includes(q));
+  if (t) list = list.filter(pk => pk.types.some(x => x.type.name === t));
+  if (onlyFavs) list = list.filter(pk => favIds.has(pk.id));
+
+  currentList = list;
+  renderTable(currentList);
+
+  const sortSel = document.getElementById('sort-select');
+  if (sortSel) sortSel.dispatchEvent(new Event('change'));
+  
+}
 
 //Startpunt
 async function init() {
   const tbody = document.getElementById("pokemon-tbody");
-  if (tbody) tbody.innerHTML = `<tr><td colspan="6">Bezig met laden...</td></tr>`;
+  if (tbody) tbody.innerHTML = `<tr><td colspan="7">Bezig met laden...</td></tr>`;
 
   try {
     allPokemons = await fetchPokemons(20);
