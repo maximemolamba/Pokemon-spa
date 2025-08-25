@@ -215,6 +215,24 @@ function setupPerPage() {
     applyFilters(); 
   });
 }
+function applyTheme(t) {
+  document.body.classList.toggle('theme-dark', t === 'dark');
+  document.body.classList.toggle('theme-light', t === 'light');
+}
+
+function setupTheme() {
+  const cb = document.getElementById('theme-toggle');
+  const saved = localStorage.getItem('theme') || 'light';
+  applyTheme(saved);
+  if (cb) {
+    cb.checked = (saved === 'dark');
+    cb.addEventListener('change', () => {
+      const t = cb.checked ? 'dark' : 'light';
+      localStorage.setItem('theme', t);
+      applyTheme(t);
+    });
+  }
+}
 
 //Startpunt
 async function init() {
@@ -233,7 +251,8 @@ async function init() {
     setupOnlyFavs();
     setupFavs();   
     setupViewToggle();  
-    setupPerPage();       
+    setupPerPage();  
+    setupTheme();     
 
     console.log("Loaded", currentList.length, "Pokémon");
   } catch (err) {
