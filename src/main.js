@@ -335,12 +335,13 @@ function setupLazyImages() {
   imgs.forEach(img => imgObserver.observe(img));
 }
 
+function setStatus(msg){ const el=document.getElementById('status'); if(el) el.textContent = msg || ''; }
 
 //Startpunt
 async function init() {
   const tbody = document.getElementById("pokemon-tbody");
   if (tbody) tbody.innerHTML = `<tr><td colspan="7">Bezig met laden...</td></tr>`;
-
+  setStatus('Bezig met laden...');
   try {
     allPokemons = await fetchPokemons(itemsPerPage);
     currentList = allPokemons;      // ⬅️ init view
@@ -363,11 +364,13 @@ if (savedView) {
     setupTheme();  
     renderGreeting();
     setupSettingsForm();
-
+    
+    setStatus(''); 
     console.log("Loaded", currentList.length, "Pokémon");
   } catch (err) {
     console.error("Fout bij ophalen/renderen:", err);
     if (tbody) tbody.innerHTML = `<tr><td colspan="7">Er ging iets mis.</td></tr>`;
+    setStatus('Er ging iets mis.'); 
   }
 }
 
