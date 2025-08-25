@@ -62,3 +62,16 @@ npm run dev
 - Snel filteren op bv. `fire`, `water`, …
 - Werkt samen met search + sort.
 
+- ## fase 5 – favorieten
+**wat heb ik gedaan**
+- extra kolom met ★/☆ per Pokémon
+- favorieten bewaard in `localStorage` (Set + helpers)
+- event delegation op `tbody` (1 listener)
+- checkbox “alleen favorieten” die samenwerkt met search/type/sort
+
+**resultaat**
+- ★ blijft na refresh
+- met “alleen favorieten” zie je enkel je faves
+
+
+
