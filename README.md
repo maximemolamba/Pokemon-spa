@@ -54,3 +54,11 @@ npm run dev
 - Lijst kan live gesorteerd worden zonder reload.
 - Werkt ook na een zoekopdracht.
 
+## Fase 4: Filter op type
+### Wat heb ik gedaan
+- Dropdown toegevoegd en automatisch gevuld met unieke types uit de dataset.
+- Filter combineert met zoekfunctie en behoudt sortering dat er al is.
+### Resultaat
+- Snel filteren op bv. `fire`, `water`, …
+- Werkt samen met search + sort.
+
