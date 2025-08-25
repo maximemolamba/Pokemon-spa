@@ -95,6 +95,14 @@ function setupSort() {
 function setupTypeFilter() {
   const sel = document.getElementById('type-filter');
   if (!sel) return;
+  const types = [...new Set(allPokemons.flatMap(pk => pk.types.map(t => t.type.name)))].sort();
+types.forEach(t => {
+  const opt = document.createElement('option');
+  opt.value = t;
+  opt.textContent = t;
+  sel.appendChild(opt);
+});
+
 }
 
 //Startpunt
