@@ -124,7 +124,7 @@ button:focus-visible {
 }
 
 #pokemon-table tbody tr:nth-child(odd) {
-  background: #fafafa;} 
+  background: brown;} 
 
   #search-input { margin: 1rem 0; padding: .5rem .75rem; max-width: 320px; }
 
@@ -148,3 +148,6 @@ button:focus-visible {
 }
 .card img { width: 96px; height: 96px; image-rendering: pixelated; }
 .card .meta { font-size: .9rem; color: #666; }
+
+
+[hidden]{ display: none !important; }
