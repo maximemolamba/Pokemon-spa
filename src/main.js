@@ -137,6 +137,11 @@ function applyFilters() {
 
 }
 
+function setupOnlyFavs() {
+  const cb = document.getElementById('only-favs');
+  if (!cb) return;
+  cb.addEventListener('change', applyFilters);
+}
 //Startpunt
 async function init() {
   const tbody = document.getElementById("pokemon-tbody");
@@ -149,6 +154,7 @@ async function init() {
     setupSearch();
     setupSort();
     setupTypeFilter();
+    setupOnlyfavs();
     setupFavs();            
 
     console.log("Loaded", currentList.length, "Pokémon");
