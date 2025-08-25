@@ -112,13 +112,17 @@ function setupTypeFilter() {
 
 function setupFavs() {
   const tbody = document.getElementById('pokemon-tbody');
-  if (!tbody) return;
-  tbody.addEventListener('click', (e) => {
+  const cards = document.getElementById('cards-container');
+  
+  const handler = (e) => {
     const btn = e.target.closest('.fav-btn');
     if (!btn) return;
     toggleFav(Number(btn.dataset.id));
-    applyFilters();
-  });
+    applyFilters(); // respecteert filters + view
+  };
+  
+  if (tbody) tbody.addEventListener('click', handler);
+  if (cards) cards.addEventListener('click', handler);
 }
 function applyFilters() {
   const q = (document.getElementById('search-input')?.value || '').toLowerCase();
